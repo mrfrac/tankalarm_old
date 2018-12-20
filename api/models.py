@@ -19,6 +19,8 @@ class Settings(models.Model):
 
     class Meta:
         db_table = "settings"
+        verbose_name = "Setting"
+        verbose_name_plural = "Settings"
 
 
 class TankReading(models.Model):
@@ -28,20 +30,26 @@ class TankReading(models.Model):
 
     class Meta:
         db_table = "tank_readings"
+        ordering = ["-created"]
 
 
 class ServiceObject(models.Model):
-    name = models.CharField(max_length=255),
+    name = models.CharField(max_length=255)
     description = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         db_table = "service_objects"
+        ordering = ["name"]
 
 
 class Service(models.Model):
-    service_object = models.ForeignKey("ServiceObject", on_delete=models.CASCADE)
+    service_object = models.ForeignKey("ServiceObject", on_delete=models.DO_NOTHING)
     description = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = "service"
+        ordering = ["-created"]
